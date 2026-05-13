@@ -1,15 +1,17 @@
 import { Metadata } from "next";
 import SharedReportClient from "./SharedReportClient";
 
-interface Props {
-  params: { id: string };
-}
+// ✅ params is now a Promise in Next.js 15
+type Props = {
+  params: Promise<{ id: string }>;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params; // ✅ await it
   const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://spendscan.ai";
 
   try {
-    const res = await fetch(`${APP_URL}/api/share?shareId=${params.id}`, {
+    const res = await fetch(`${APP_URL}/api/share?shareId=${id}`, {
       next: { revalidate: 3600 },
     });
     const data = await res.json();
@@ -26,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           title,
           description,
           type: "website",
-          url: `${APP_URL}/share/${params.id}`,
+          url: `${APP_URL}/share/${id}`,
           images: [{ url: `${APP_URL}/og-image.png`, width: 1200, height: 630 }],
         },
         twitter: {
@@ -44,6 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function SharedReportPage({ params }: Props) {
-  return <SharedReportClient shareId={params.id} />;
+export default async function SharedReportPage({ params }: Props) {
+  const { id } = await params; // ✅ await it
+  return <SharedReportClient shareId={id} />;
 }
