@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+// @ts-expect-error: CSS module type declarations not available in this project setup
 import "./globals.css";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://spendscan.ai";
@@ -13,15 +14,8 @@ export const metadata: Metadata = {
   description:
     "Audit your AI tool spending in 2 minutes. Get personalized recommendations to cut costs 20-40% without losing productivity.",
   keywords: [
-    "AI tools",
-    "SaaS spending",
-    "AI cost optimization",
-    "Cursor",
-    "ChatGPT",
-    "GitHub Copilot",
-    "Claude",
-    "AI budget",
-    "software audit",
+    "AI tools", "SaaS spending", "AI cost optimization", "Cursor", "ChatGPT",
+    "GitHub Copilot", "Claude", "AI budget", "software audit",
   ],
   authors: [{ name: "SpendScan AI" }],
   creator: "SpendScan AI",
